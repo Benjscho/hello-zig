@@ -17,6 +17,11 @@ pub fn main() !void {
     try bw.flush(); // don't forget to flush!
 }
 
+fn fibonacci(n: u64) u64 {
+    if (n == 0 or n == 1) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
 test "simple test" {
     var list = std.ArrayList(i32).init(std.testing.allocator);
     defer list.deinit(); // try commenting this out and see if zig detects the memory leak!
@@ -38,4 +43,18 @@ test "if statement" {
     }
 
     try expect(x == 1);
+}
+
+test "if statement expr" {
+    const a = true;
+    var x: u16 = 0;
+    x += if (a) 1 else 2;
+    try expect(x == 1);
+}
+
+test "recursion" {
+    const x = fibonacci(10);
+    try expect(x == 55);
+
+    _ = fibonacci(20);
 }
